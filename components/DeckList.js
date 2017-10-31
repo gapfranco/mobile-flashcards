@@ -22,7 +22,7 @@ export default class Deck extends React.Component {
           data={this.state.data}
           renderItem={({item}) => (
             <TouchableOpacity onPress={() => this.props.navigation.navigate('DeckDetail',
-              { deckId: item.key }
+              { deckId: item.key, deckTitle: item.title }
             )}
             >
               <View style={styles.item}>

@@ -10,9 +10,9 @@ export default class DeckDetail extends React.Component {
   }
 
   static navigationOptions = ({ navigation }) => {
-    const { deckId } = navigation.state.params
+    const { deckTitle } = navigation.state.params
     return {
-      title: `${deckId}`
+      title: `${deckTitle}`
     }
   }
 

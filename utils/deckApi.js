@@ -26,17 +26,27 @@ function setInitialData () {
           answer: 'The combination of a function and the lexical environment within which that function was declared.'
         }
       ]
-    }
+    },
+    'React Native': {
+      title: 'React Native',
+      questions: [
+        {
+          question: 'What is a Reactive Native?',
+          answer: 'The combination of a function and the lexical environment within which that function was declared.'
+        }
+      ]
+    },
+
   }
 
   let initialData = {decks: data}
-
   AsyncStorage.setItem(DECK_STORAGE_KEY, JSON.stringify(initialData))
 
   return initialData
 }
 
 function formatDataResults(results) {
+  // return setInitialData()
   return results === null
     ? setInitialData()
     : JSON.parse(results)
@@ -60,3 +70,19 @@ export function fetchDeck(id) {
       .reduce((prev, curr) => curr, {})
   )
 }
+
+export function saveDeckTitle(title) {
+  const newObj = {
+    [title]: {
+      title: title,
+      questions: []
+    }
+  }
+  return AsyncStorage.setItem(DECK_STORAGE_KEY, newObj, () => {} )
+}
+
+export function addCardToDeck(title, card) {
+  // TODO
+  return AsyncStorage.setItem(DECK_STORAGE_KEY, newObj, () => {} )
+}
+
