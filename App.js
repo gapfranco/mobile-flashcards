@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Platform, StatusBar, Button } from 'react-native'
+import { View, Platform, StatusBar, StyleSheet, Button } from 'react-native'
 
 import DeckList from './components/DeckList'
 import Config from './components/Config'
@@ -7,10 +7,16 @@ import Calendar from './components/Calendar'
 
 import { TabNavigator, StackNavigator } from 'react-navigation'
 import { purple, white } from './utils/colors'
-import { FontAwesome, Ionicons } from '@expo/vector-icons'
+import { FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { Constants } from 'expo'
 
 // import { setLocalNotification } from './utils/helpers'
+
+const styles = StyleSheet.create({
+  header: {
+    backgroundColor: purple
+  }
+})
 
 function FlashStatusBar ({backgroundColor, ...props}) {
   return (
@@ -25,25 +31,31 @@ const Tabs = TabNavigator({
     screen: DeckList,
     navigationOptions: {
       title: 'Flashcards',
+      headerStyle: styles.header,
+      headerTintColor: white,
       headerRight: <Button title="Add" onPress={() => {}}/>,
       tabBarLabel: 'Decks',
-      tabBarIcon: ({ tintColor }) => <Ionicons name='ios-bookmarks' size={30} color={tintColor} />
+      tabBarIcon: ({ tintColor }) => <MaterialCommunityIcons name='cards-outline' size={30} color={tintColor} />
     },
   },
   Calendar: {
     screen: Calendar,
     navigationOptions: {
       title: 'Calendar',
+      headerStyle: styles.header,
+      headerTintColor: white,
       tabBarLabel: 'Calendar',
-      tabBarIcon: ({ tintColor }) => <Ionicons name='ios-calendar' size={30} color={tintColor} />
+      tabBarIcon: ({ tintColor }) => <MaterialCommunityIcons name='calendar-check' size={30} color={tintColor} />
     },
   },
   Config: {
     screen: Config,
     navigationOptions: {
       title: 'Config screen',
-      tabBarLabel: 'Config',
-      tabBarIcon: ({ tintColor }) => <Ionicons name='ios-options' size={30} color={tintColor} />
+      headerStyle: styles.header,
+      headerTintColor: white,
+      tabBarLabel: 'Settings',
+      tabBarIcon: ({ tintColor }) => <Ionicons name='ios-settings' size={30} color={tintColor} />
     }
   }
 },
