@@ -4,6 +4,8 @@ import { View, Platform, StatusBar, StyleSheet, Button } from 'react-native'
 import DeckList from './components/DeckList'
 import Config from './components/Config'
 import Calendar from './components/Calendar'
+import DeckDetail from './components/DeckDetail'
+import QuizQuestion from './components/QuizQuestion'
 
 import { TabNavigator, StackNavigator } from 'react-navigation'
 import { purple, white } from './utils/colors'
@@ -30,7 +32,7 @@ const Tabs = TabNavigator({
   DeckList: {
     screen: DeckList,
     navigationOptions: {
-      title: 'Flashcards',
+      title: 'Decks',
       headerStyle: styles.header,
       headerTintColor: white,
       headerRight: <Button title="Add" onPress={() => {}}/>,
@@ -51,7 +53,7 @@ const Tabs = TabNavigator({
   Config: {
     screen: Config,
     navigationOptions: {
-      title: 'Config screen',
+      title: 'Settings',
       headerStyle: styles.header,
       headerTintColor: white,
       tabBarLabel: 'Settings',
@@ -83,8 +85,17 @@ const MainNavigator = StackNavigator({
   Home: {
     screen: Tabs,
   },
-  EntryDetail: {
-    screen: DeckList,
+  DeckDetail: {
+    screen: DeckDetail,
+    navigationOptions: {
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: purple,
+      }
+    }
+  },
+  QuizQuestion: {
+    screen: QuizQuestion,
     navigationOptions: {
       headerTintColor: white,
       headerStyle: {
@@ -92,6 +103,7 @@ const MainNavigator = StackNavigator({
       }
     }
   }
+
 })
 
 export default class App extends React.Component {

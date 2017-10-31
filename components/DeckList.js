@@ -1,31 +1,38 @@
 import React from 'react';
 import { View, Text, StyleSheet, Platform, FlatList, TouchableOpacity } from 'react-native'
-import { white, gray } from '../utils/colors'
+import { white, gray, lightPurple, pink } from '../utils/colors'
+import { fetchDecks } from '../utils/deckApi'
 
 export default class Deck extends React.Component {
+
+  state = {
+    ready: false,
+    data: []
+  }
+
+  componentDidMount () {
+    fetchDecks()
+    .then((list) => this.setState(() => ({ready: true, data: list})))
+  }
+
   render() {
     return (
       <View>
         <FlatList
-          data={[
-            {key: 'Devin', cards: 5},
-            {key: 'Jackson', cards: 12},
-            {key: 'James', cards: 1},
-            {key: 'Joel', cards: 5},
-            {key: 'John', cards: 2},
-            {key: 'Jillian', cards: 8},
-            {key: 'Jimmy', cards: 0},
-            {key: 'Julie', cards: 2},
-          ]}
+          data={this.state.data}
           renderItem={({item}) => (
-            <View style={styles.item}>
-              <Text style={styles.title}>{item.key}</Text>
-              {item.cards === 0 
-              ? <Text style={styles.subtitle}>No cards</Text>
-              : <Text style={styles.subtitle}>{item.cards} {item.cards === 1 ? "card" : "cards"}</Text>
-              }
-                          
-            </View>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('DeckDetail',
+              { deckId: item.key }
+            )}
+            >
+              <View style={styles.item}>
+                <Text style={styles.title}>{item.title}</Text>
+                  {item.cards === 0
+                  ? <Text style={styles.subtitle}>No cards</Text>
+                  : <Text style={styles.subtitle}>{item.cards} {item.cards === 1 ? "card" : "cards"}</Text>
+                  }
+              </View>
+            </TouchableOpacity>
             )}
         />
       </View>
