@@ -1,6 +1,12 @@
 import React from 'react'
 import { View, Platform, StatusBar, StyleSheet, Button } from 'react-native'
 
+import { createStore, applyMiddleware, compose } from 'redux'
+import thunk from 'redux-thunk'
+import { Provider } from 'react-redux'
+import mainReducer from './reducers/mainReducer'
+import { loadDecks, loadDates } from './actions/deckActions'
+
 import DeckList from './components/DeckList'
 import Config from './components/Config'
 import Calendar from './components/Calendar'
@@ -107,16 +113,25 @@ const MainNavigator = StackNavigator({
 
 })
 
+// Create store and load initial data
+let store = createStore(mainReducer, applyMiddleware(thunk))
+
+store.dispatch(loadDecks())
+store.dispatch(loadDates())
+
 export default class App extends React.Component {
   // componentDidMount() {
   //   setLocalNotification()
   // }
+
   render() {
     return (
-      <View style={{flex: 1}}>
-        {<FlashStatusBar backgroundColor={purple} barStyle="light-content" />}
-        <MainNavigator />
-      </View>
+      <Provider store={store}>
+        <View style={{flex: 1}}>
+          {<FlashStatusBar backgroundColor={purple} barStyle="light-content" />}
+          <MainNavigator />
+        </View>
+      </Provider>
     )
   }
 }

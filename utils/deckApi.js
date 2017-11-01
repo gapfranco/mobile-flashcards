@@ -1,6 +1,7 @@
 import { AsyncStorage } from 'react-native'
 
 export const DECK_STORAGE_KEY = 'Flashcards:decks'
+export const CALENDAR_STORAGE_KEY = 'Flashcards:calendar'
 
 function setInitialData () {
 
@@ -85,4 +86,22 @@ export function addCardToDeck(title, card) {
   // TODO
   return AsyncStorage.setItem(DECK_STORAGE_KEY, newObj, () => {} )
 }
+
+export function addQuizToCalendar(date, title, perc) {
+  const newQuiz = {date, title, perc}
+  return AsyncStorage.getItem(CALENDAR_STORAGE_KEY)
+  .then(result => JSON.parse(result))
+  .then(result => {
+    if (result === null) {
+      result = []
+    }
+    result.push(newQuiz)
+    return AsyncStorage.setItem(CALENDAR_STORAGE_KEY, JSON.stringify(result))
+  })
+}
+
+export function fetchCalendar() {
+  return AsyncStorage.getItem(CALENDAR_STORAGE_KEY).then(result => JSON.parse(result))
+}
+
 

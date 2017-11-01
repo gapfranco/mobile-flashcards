@@ -1,8 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet, Platform, FlatList, Button, TouchableOpacity } from 'react-native'
 import { white, gray, purple, red, blue, green } from '../utils/colors'
+import { connect } from 'react-redux'
+import { addDate } from '../actions/deckActions'
 
-export default class QuizQuestion extends React.Component {
+class QuizQuestion extends React.Component {
 
   state = {
     deck: null,
@@ -16,14 +18,14 @@ export default class QuizQuestion extends React.Component {
     const {deck, index, front} = this.props.navigation.state.params
     this.setState(() => ({deck: deck, index: index, front: front}))
   }
-  
+
   turnCard = () => {
     this.setState(() => ({front: !this.state.front}))
   }
 
   nextCorrect = () => {
     if (this.state.index < this.state.deck.cards - 1) {
-      this.setState(() => ({index: this.state.index + 1, correct: this.state.correct + 1}))      
+      this.setState(() => ({index: this.state.index + 1, correct: this.state.correct + 1}))
     } else {
       this.endQuiz(1)
     }
@@ -38,8 +40,12 @@ export default class QuizQuestion extends React.Component {
   }
 
   endQuiz = (p) => {
-    const perc = ((this.state.correct + p) * 100 / this.state.deck.cards).toFixed(2)
+    const perc = ((this.state.correct + p) * 100 / this.state.deck.cards).toFixed(1)
     this.setState(() => ({perc: perc}))
+
+    //addQuizToCalendar('01/11/2017', this.state.deck.title, perc)
+    this.props.dispatch(addDate('01/11/2017', this.state.deck.title, perc))
+
   }
 
 
@@ -50,9 +56,9 @@ export default class QuizQuestion extends React.Component {
     if (this.state.perc !== null) {
       return (
         <View style={styles.results}>
-          <Text style={styles.question}>Result</Text>         
-          <Text style={styles.answer}>{this.state.perc}%</Text>         
-        </View>        
+          <Text style={styles.question}>Your Result</Text>
+          <Text style={styles.answer}>{this.state.perc}%</Text>
+        </View>
       )
     }
     return (
@@ -61,7 +67,7 @@ export default class QuizQuestion extends React.Component {
           <Text style={styles.count}>{this.state.index + 1}/{this.state.deck.cards}</Text>
         </View>
         {this.state.front
-        ? <View style={styles.main}>
+        ? <View style={styles.item}>
           <Text style={styles.question}>{this.state.deck.questions[this.state.index].question}</Text>
           <TouchableOpacity onPress={this.turnCard}>
             <Text style={styles.revert}>
@@ -69,7 +75,7 @@ export default class QuizQuestion extends React.Component {
             </Text>
           </TouchableOpacity>
           </View>
-        : <View style={styles.main}>
+        : <View style={styles.item}>
           <Text style={styles.answer}>{this.state.deck.questions[this.state.index].answer}</Text>
           <TouchableOpacity onPress={this.turnCard}>
             <Text style={styles.revert}>
@@ -116,10 +122,23 @@ const styles = StyleSheet.create({
     margin: 12,
     fontSize: 18,
   },
-  main: {
+  item: {
     flex: 1,
+    backgroundColor: white,
+    borderRadius: Platform.OS === 'ios' ? 16 : 2,
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 20,
+    marginLeft: 16,
+    marginRight: 16,
+    marginTop: 16,
+    shadowRadius: 3,
+    shadowOpacity: 0.8,
+    shadowColor: 'rgba(0, 0, 0, 0.24)',
+    shadowOffset: {
+      width: 0,
+      height: 3
+    },
   },
   buttons: {
     flex: 1,
@@ -163,5 +182,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 
-
 });
+
+function mapStateToProps (state) {
+  return {
+    ...state
+  }
+}
+
+export default connect(mapStateToProps)(QuizQuestion)

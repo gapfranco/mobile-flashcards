@@ -2,24 +2,15 @@ import React from 'react';
 import { View, Text, StyleSheet, Platform, FlatList, TouchableOpacity } from 'react-native'
 import { white, gray, lightPurple, pink } from '../utils/colors'
 import { fetchDecks } from '../utils/deckApi'
+import { connect } from 'react-redux'
 
-export default class Deck extends React.Component {
-
-  state = {
-    ready: false,
-    data: []
-  }
-
-  componentDidMount () {
-    fetchDecks()
-    .then((list) => this.setState(() => ({ready: true, data: list})))
-  }
+class Deck extends React.Component {
 
   render() {
     return (
       <View>
         <FlatList
-          data={this.state.data}
+          data={this.props.decks}
           renderItem={({item}) => (
             <TouchableOpacity onPress={() => this.props.navigation.navigate('DeckDetail',
               { deckId: item.key, deckTitle: item.title }
@@ -58,3 +49,10 @@ const styles = StyleSheet.create({
   }
 })
 
+function mapStateToProps (state) {
+  return {
+    decks: state.decks
+  }
+}
+
+export default connect(mapStateToProps)(Deck)

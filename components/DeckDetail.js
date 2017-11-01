@@ -17,6 +17,8 @@ export default class DeckDetail extends React.Component {
   }
 
   componentDidMount () {
+    console.log('DECK DETAIL')
+
     const {state} = this.props.navigation
     const id = state.params.deckId
     fetchDeck(id).then((deck) => this.setState(() => ({deck: deck})))
