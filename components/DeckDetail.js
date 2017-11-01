@@ -25,7 +25,8 @@ export default class DeckDetail extends React.Component {
   startQuiz = () => {
     this.props.navigation.navigate('QuizQuestion', {
       deck: this.state.deck,
-      index: 0
+      index: 0,
+      front: true
     })
   }
 
