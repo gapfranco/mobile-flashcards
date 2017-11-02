@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Platform, FlatList, Button, TouchableOpacity } from 'react-native'
-import { white, gray, purple, red, blue, green } from '../utils/colors'
+import colors from '../utils/colors'
 import { connect } from 'react-redux'
 import { addDate } from '../actions/deckActions'
 
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   },
   item: {
     flex: 1,
-    backgroundColor: white,
+    backgroundColor: colors.white,
     borderRadius: Platform.OS === 'ios' ? 16 : 2,
     alignItems: 'center',
     justifyContent: 'center',
@@ -155,11 +155,11 @@ const styles = StyleSheet.create({
   },
   revert: {
     fontSize: 24,
-    color: red,
+    color: colors.red,
   },
   button: {
     padding: 10,
-    backgroundColor: green,
+    backgroundColor: colors.green,
     alignSelf: 'center',
     borderRadius: 5,
     margin: 20,
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
   },
   button2: {
     padding: 10,
-    backgroundColor: red,
+    backgroundColor: colors.red,
     alignSelf: 'center',
     borderRadius: 5,
     alignItems: 'center',
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     width: 200,
   },
   buttonText :{
-    color: white,
+    color: colors.white,
     fontSize: 18,
   },
 

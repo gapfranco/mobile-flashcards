@@ -14,7 +14,7 @@ import DeckDetail from './components/DeckDetail'
 import QuizQuestion from './components/QuizQuestion'
 
 import { TabNavigator, StackNavigator } from 'react-navigation'
-import { purple, white } from './utils/colors'
+import colors from './utils/colors'
 import { FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { Constants } from 'expo'
 
@@ -22,7 +22,7 @@ import { Constants } from 'expo'
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: purple
+    backgroundColor: colors.purple
   }
 })
 
@@ -40,7 +40,7 @@ const Tabs = TabNavigator({
     navigationOptions: {
       title: 'Decks',
       headerStyle: styles.header,
-      headerTintColor: white,
+      headerTintColor: colors.white,
       headerRight: <Button title="Add" onPress={() => {}}/>,
       tabBarLabel: 'Decks',
       tabBarIcon: ({ tintColor }) => <MaterialCommunityIcons name='cards-outline' size={30} color={tintColor} />
@@ -49,10 +49,10 @@ const Tabs = TabNavigator({
   Calendar: {
     screen: Calendar,
     navigationOptions: {
-      title: 'Calendar',
+      title: 'History',
       headerStyle: styles.header,
-      headerTintColor: white,
-      tabBarLabel: 'Calendar',
+      headerTintColor: colors.white,
+      tabBarLabel: 'History',
       tabBarIcon: ({ tintColor }) => <MaterialCommunityIcons name='calendar-check' size={30} color={tintColor} />
     },
   },
@@ -61,7 +61,7 @@ const Tabs = TabNavigator({
     navigationOptions: {
       title: 'Settings',
       headerStyle: styles.header,
-      headerTintColor: white,
+      headerTintColor: colors.white,
       tabBarLabel: 'Settings',
       tabBarIcon: ({ tintColor }) => <Ionicons name='ios-settings' size={30} color={tintColor} />
     }
@@ -72,10 +72,10 @@ const Tabs = TabNavigator({
     title: 'Mobile Flashcards'
   },
   tabBarOptions: {
-    activeTintColor: Platform.OS === 'ios' ? purple : white,
+    activeTintColor: Platform.OS === 'ios' ? colors.purple : colors.white,
     style: {
       height: 56,
-      backgroundColor: Platform.OS === 'ios' ? white : purple,
+      backgroundColor: Platform.OS === 'ios' ? colors.white : colors.purple,
       shadowColor: 'rgba(0, 0, 0, 0.24)',
       shadowOffset: {
         width: 0,
@@ -94,9 +94,9 @@ const MainNavigator = StackNavigator({
   DeckDetail: {
     screen: DeckDetail,
     navigationOptions: {
-      headerTintColor: white,
+      headerTintColor: colors.white,
       headerStyle: {
-        backgroundColor: purple,
+        backgroundColor: colors.purple,
       }
     }
   },
@@ -104,9 +104,9 @@ const MainNavigator = StackNavigator({
     screen: QuizQuestion,
     navigationOptions: {
       title: 'Quiz',
-      headerTintColor: white,
+      headerTintColor: colors.white,
       headerStyle: {
-        backgroundColor: purple,
+        backgroundColor: colors.purple,
       }
     }
   }
@@ -128,7 +128,7 @@ export default class App extends React.Component {
     return (
       <Provider store={store}>
         <View style={{flex: 1}}>
-          {<FlashStatusBar backgroundColor={purple} barStyle="light-content" />}
+          {<FlashStatusBar backgroundColor={colors.purple} barStyle="light-content" />}
           <MainNavigator />
         </View>
       </Provider>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Platform, FlatList, TouchableOpacity } from 'react-native'
-import { white, gray, lightPurple, pink } from '../utils/colors'
+import colors from '../utils/colors'
 import { fetchDecks } from '../utils/deckApi'
 import { connect } from 'react-redux'
 
@@ -33,7 +33,7 @@ class Deck extends React.Component {
 
 const styles = StyleSheet.create({
   item: {
-    backgroundColor: white,
+    backgroundColor: colors.white,
     padding: 20,
     marginLeft: 0,
     marginRight: 0,
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   subtitle: {
-    color: gray,
+    color: colors.gray,
     fontStyle: 'italic'
   }
 })

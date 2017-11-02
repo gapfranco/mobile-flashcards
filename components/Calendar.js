@@ -1,31 +1,31 @@
 import React from 'react';
-import { StyleSheet, Text, View, Platform } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Platform } from 'react-native';
 import { fetchCalendar } from '../utils/deckApi'
 import { connect } from 'react-redux'
-import { white, gray, purple, red, blue, green } from '../utils/colors'
+import colors from '../utils/colors'
 
 class Calendar extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        {Object.keys(this.props.dates).map((k, i) => {
-          return (
-            <View style={styles.item} key={i}>
-              <Text style={styles.title}>{k}</Text>
-              {this.props.dates[k].map((dt, j) => {
-              return (<Text key={j}>{j+1}. {dt.quiz}: {dt.perc}%</Text>)
-              })
+      <View>
+        <FlatList data={this.props.dates}
+          renderItem={({item}) => (
+            <View style={styles.date}>
+              <Text style={styles.title}>{item.key}</Text>
+              {item.quizes.map((elem, i) => (
+                <View key={i} style={styles.line}>
+                  <Text style={styles.txt}>{i+1}</Text>
+                  <Text style={styles.txt}>{elem.quiz}</Text>
+                  <Text style={styles.txt}>{elem.perc}%</Text>
+                </View>
+              ))
               }
             </View>
-          )
-        })}
-        {/* {this.props.dates
-        .map((date, i) => {
-          return (<Text key={i}>{date.date} {date.quiz} {date.perc}</Text>)
-        } )} */}
+          )}
+        />
       </View>
-    );
+    )
   }
 }
 
@@ -38,13 +38,23 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    color: red,
+    color: colors.red,
     paddingBottom: 12
   },
-  item: {
-    backgroundColor: white,
+  line: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: colors.lightDeepPurple,
+    marginBottom: 4,
+    padding: 4,
+  },
+  txt: {
+    fontSize: 16,
+  },
+  date: {
+    backgroundColor: colors.white,
     borderRadius: Platform.OS === 'ios' ? 16 : 2,
-    alignItems: 'flex-start',
     justifyContent: 'flex-start',
     padding: 20,
     marginLeft: 16,
@@ -60,16 +70,20 @@ const styles = StyleSheet.create({
   },
 });
 
-
-
 function mapStateToProps (state) {
+  // state.dates is in format [{date1, quiz, %}, {date2, quiz, %}, ...]
+  // reduce to format {date1: [{date1, quiz, %}, ...], date2: [{date2, quiz, 5}, ...]}
+  const obj = state.dates.reduce((r, a) => {
+    r[a.date] = r[a.date] || []
+    r[a.date].push(a)
+    return r
+  }, {})
+  // then transform to format [{key: date1, quizes: [{date1, quiz, %}, ...]}, {key:date2, quizes:...}]
+  const list = Object.keys(obj).map(date => (
+    {key: date, quizes: obj[date]}
+  ))
   return {
-    dates: state.dates.reduce((r, a) => {
-      r[a.date] = r[a.date] || []
-      r[a.date].push(a)
-      return r
-    }, {})
-  
+    dates: list  
   }
 }
 

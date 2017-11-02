@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Platform, FlatList, Button, TouchableOpacity } from 'react-native'
-import { white, gray, purple, pink, lightPurple } from '../utils/colors'
+import colors from '../utils/colors'
 import { fetchDeck } from '../utils/deckApi'
 
 export default class DeckDetail extends React.Component {
@@ -87,12 +87,12 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 26,
-    color: gray,
+    color: colors.gray,
     fontStyle: 'italic'
   },
   button: {
     padding: 10,
-    backgroundColor: purple,
+    backgroundColor: colors.purple,
     alignSelf: 'center',
     borderRadius: 5,
     margin: 20,
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   },
   button2: {
     padding: 10,
-    backgroundColor: gray,
+    backgroundColor: colors.gray,
     alignSelf: 'center',
     borderRadius: 5,
     margin: 20,
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     width: 200,
   },
   buttonText :{
-    color: white,
+    color: colors.white,
     fontSize: 18,
   },
 
