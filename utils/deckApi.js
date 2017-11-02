@@ -87,8 +87,8 @@ export function addCardToDeck(title, card) {
   return AsyncStorage.setItem(DECK_STORAGE_KEY, newObj, () => {} )
 }
 
-export function addQuizToCalendar(date, title, perc) {
-  const newQuiz = {date, title, perc}
+export function addQuizToCalendar(date, quiz, perc) {
+  const newQuiz = {date, quiz, perc}
   return AsyncStorage.getItem(CALENDAR_STORAGE_KEY)
   .then(result => JSON.parse(result))
   .then(result => {

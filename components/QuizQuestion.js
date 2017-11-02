@@ -42,10 +42,8 @@ class QuizQuestion extends React.Component {
   endQuiz = (p) => {
     const perc = ((this.state.correct + p) * 100 / this.state.deck.cards).toFixed(1)
     this.setState(() => ({perc: perc}))
-
-    //addQuizToCalendar('01/11/2017', this.state.deck.title, perc)
-    this.props.dispatch(addDate('01/11/2017', this.state.deck.title, perc))
-
+    
+    this.props.dispatch(addDate((new Date()).toLocaleDateString(), this.state.deck.title, perc))
   }
 
 
