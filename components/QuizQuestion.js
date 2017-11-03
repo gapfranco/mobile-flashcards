@@ -42,7 +42,6 @@ class QuizQuestion extends React.Component {
   endQuiz = (p) => {
     const perc = ((this.state.correct + p) * 100 / this.state.deck.cards).toFixed(1)
     this.setState(() => ({perc: perc}))
-    
     this.props.dispatch(addDate((new Date()).toLocaleDateString(), this.state.deck.title, perc))
   }
 
@@ -83,6 +82,7 @@ class QuizQuestion extends React.Component {
           </View>
         }
         <View style={styles.buttons}>
+        
           <TouchableOpacity style={styles.button} onPress={this.nextCorrect}>
             <Text style={styles.buttonText}>
               Correct

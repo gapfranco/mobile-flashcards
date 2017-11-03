@@ -90,6 +90,7 @@ export function addCardToDeck(title, card) {
 export function addQuizToCalendar(date, quiz, perc) {
   const newQuiz = {date, quiz, perc}
   return AsyncStorage.getItem(CALENDAR_STORAGE_KEY)
+  .then(result => console.log('ADDQUIZTOCAL', result))
   .then(result => JSON.parse(result))
   .then(result => {
     if (result === null) {
@@ -101,7 +102,8 @@ export function addQuizToCalendar(date, quiz, perc) {
 }
 
 export function fetchCalendar() {
-  return AsyncStorage.getItem(CALENDAR_STORAGE_KEY).then(result => JSON.parse(result))
+  return AsyncStorage.getItem(CALENDAR_STORAGE_KEY)
+    .then(result => JSON.parse(result))
 }
 
 

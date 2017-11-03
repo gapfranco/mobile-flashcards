@@ -73,15 +73,18 @@ const styles = StyleSheet.create({
 function mapStateToProps (state) {
   // state.dates is in format [{date1, quiz, %}, {date2, quiz, %}, ...]
   // reduce to format {date1: [{date1, quiz, %}, ...], date2: [{date2, quiz, 5}, ...]}
-  const obj = state.dates.reduce((r, a) => {
-    r[a.date] = r[a.date] || []
-    r[a.date].push(a)
-    return r
-  }, {})
-  // then transform to format [{key: date1, quizes: [{date1, quiz, %}, ...]}, {key:date2, quizes:...}]
-  const list = Object.keys(obj).map(date => (
-    {key: date, quizes: obj[date]}
-  ))
+  let list = []
+  if (state.dates !== null) {
+    const obj = state.dates.reduce((r, a) => {
+      r[a.date] = r[a.date] || []
+      r[a.date].push(a)
+      return r
+    }, {})
+    // then transform to format [{key: date1, quizes: [{date1, quiz, %}, ...]}, {key:date2, quizes:...}]
+    list = Object.keys(obj).map(date => (
+      {key: date, quizes: obj[date]}
+    ))  
+  } 
   return {
     dates: list  
   }
