@@ -24,9 +24,6 @@ export const loadDecksSuccess = (decks) => {
 export const loadDates = () => {
   return function(dispatch) {
     return fetchCalendar().then(dates => {
-      if (dates === null) [
-        dates = []
-      ]
       dispatch(loadDatesSuccess(dates));
     }).catch(error => {
       throw(error);

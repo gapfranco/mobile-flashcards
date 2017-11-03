@@ -17,8 +17,6 @@ export default class DeckDetail extends React.Component {
   }
 
   componentDidMount () {
-    console.log('DECK DETAIL')
-
     const {state} = this.props.navigation
     const id = state.params.deckId
     fetchDeck(id).then((deck) => this.setState(() => ({deck: deck})))
@@ -29,6 +27,12 @@ export default class DeckDetail extends React.Component {
       deck: this.state.deck,
       index: 0,
       front: true
+    })
+  }
+
+  addCard = () => {
+    this.props.navigation.navigate('QuizAddCard', {
+      deck: this.state.deck,
     })
   }
 
@@ -53,7 +57,7 @@ export default class DeckDetail extends React.Component {
             </TouchableOpacity>
           : <Text>No cards in deck</Text>
           }
-          <TouchableOpacity style={styles.button2} onPress={() => {}}>
+          <TouchableOpacity style={styles.button2} onPress={this.addCard}>
             <Text style={styles.buttonText}>
               Add Card
             </Text>

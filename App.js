@@ -12,6 +12,7 @@ import Config from './components/Config'
 import Calendar from './components/Calendar'
 import DeckDetail from './components/DeckDetail'
 import QuizQuestion from './components/QuizQuestion'
+import QuizAddCard from './components/QuizAddCard'
 
 import { TabNavigator, StackNavigator } from 'react-navigation'
 import colors from './utils/colors'
@@ -109,13 +110,22 @@ const MainNavigator = StackNavigator({
         backgroundColor: colors.purple,
       }
     }
-  }
+  },
+  QuizAddCard: {
+    screen: QuizAddCard,
+    navigationOptions: {
+      title: 'Add Card',
+      headerTintColor: colors.white,
+      headerStyle: {
+        backgroundColor: colors.purple,
+      }
+    }
+  },
 
 })
 
 // Create store and load initial data
 let store = createStore(mainReducer, applyMiddleware(thunk))
-
 store.dispatch(loadDecks())
 store.dispatch(loadDates())
 

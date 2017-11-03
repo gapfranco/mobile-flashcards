@@ -81,12 +81,13 @@ function mapStateToProps (state) {
       return r
     }, {})
     // then transform to format [{key: date1, quizes: [{date1, quiz, %}, ...]}, {key:date2, quizes:...}]
-    list = Object.keys(obj).map(date => (
+    // reverse to show new dates first
+    list = Object.keys(obj).reverse().map(date => (
       {key: date, quizes: obj[date]}
-    ))  
-  } 
+    ))
+  }
   return {
-    dates: list  
+    dates: list
   }
 }
 

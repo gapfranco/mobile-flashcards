@@ -3,7 +3,7 @@ import { AsyncStorage } from 'react-native'
 export const DECK_STORAGE_KEY = 'Flashcards:decks'
 export const CALENDAR_STORAGE_KEY = 'Flashcards:calendar'
 
-function setInitialData () {
+function setInitialData() {
 
   const data = {
     React: {
@@ -37,7 +37,6 @@ function setInitialData () {
         }
       ]
     },
-
   }
 
   let initialData = {decks: data}
@@ -87,23 +86,29 @@ export function addCardToDeck(title, card) {
   return AsyncStorage.setItem(DECK_STORAGE_KEY, newObj, () => {} )
 }
 
-export function addQuizToCalendar(date, quiz, perc) {
-  const newQuiz = {date, quiz, perc}
-  return AsyncStorage.getItem(CALENDAR_STORAGE_KEY)
-  .then(result => console.log('ADDQUIZTOCAL', result))
-  .then(result => JSON.parse(result))
-  .then(result => {
-    if (result === null) {
-      result = []
-    }
-    result.push(newQuiz)
-    return AsyncStorage.setItem(CALENDAR_STORAGE_KEY, JSON.stringify(result))
-  })
+
+function setInitialCalendar() {
+  const dates = []
+  AsyncStorage.setItem(CALENDAR_STORAGE_KEY, JSON.stringify(dates))
+}
+
+function formatCalendarResults(results) {
+  return results === null
+    ? setInitialCalendar()
+    : JSON.parse(results)
 }
 
 export function fetchCalendar() {
   return AsyncStorage.getItem(CALENDAR_STORAGE_KEY)
-    .then(result => JSON.parse(result))
+    .then(formatCalendarResults)
 }
 
-
+export function addQuizToCalendar(date, quiz, perc) {
+  const newQuiz = {date, quiz, perc}
+  return AsyncStorage.getItem(CALENDAR_STORAGE_KEY)
+  .then(result => JSON.parse(result))
+  .then(result => {
+    result.push(newQuiz)
+    return AsyncStorage.setItem(CALENDAR_STORAGE_KEY, JSON.stringify(result))
+  })
+}
