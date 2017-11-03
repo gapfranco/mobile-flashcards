@@ -82,10 +82,13 @@ export function saveDeckTitle(title) {
 }
 
 export function addCardToDeck(title, card) {
-  // TODO
-  return AsyncStorage.setItem(DECK_STORAGE_KEY, newObj, () => {} )
+  return AsyncStorage.getItem(DECK_STORAGE_KEY)
+  .then(result => {
+    let data = JSON.parse(result)
+    data.decks[title].questions.push(card)
+    return AsyncStorage.setItem(DECK_STORAGE_KEY, JSON.stringify(data))
+  })
 }
-
 
 function setInitialCalendar() {
   const dates = []

@@ -1,13 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet, Platform, FlatList, Button, TouchableOpacity } from 'react-native'
 import colors from '../utils/colors'
+import { connect } from 'react-redux'
 import { fetchDeck } from '../utils/deckApi'
 
-export default class DeckDetail extends React.Component {
-
-  state = {
-    deck: {}
-  }
+class DeckDetail extends React.Component {
 
   static navigationOptions = ({ navigation }) => {
     const { deckTitle } = navigation.state.params
@@ -16,15 +13,9 @@ export default class DeckDetail extends React.Component {
     }
   }
 
-  componentDidMount () {
-    const {state} = this.props.navigation
-    const id = state.params.deckId
-    fetchDeck(id).then((deck) => this.setState(() => ({deck: deck})))
-  }
-
   startQuiz = () => {
     this.props.navigation.navigate('QuizQuestion', {
-      deck: this.state.deck,
+      deck: this.props.deck,
       index: 0,
       front: true
     })
@@ -32,7 +23,7 @@ export default class DeckDetail extends React.Component {
 
   addCard = () => {
     this.props.navigation.navigate('QuizAddCard', {
-      deck: this.state.deck,
+      deck: this.props.deck,
     })
   }
 
@@ -40,16 +31,16 @@ export default class DeckDetail extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.main}>
-          <Text style={styles.title}>{this.state.deck.title}</Text>
+          <Text style={styles.title}>{this.props.deck.title}</Text>
           <Text style={styles.subtitle}>
-            {this.state.deck.cards === 0
+            {this.props.deck.cards === 0
               ? <Text style={styles.subtitle}>No cards</Text>
-              : <Text style={styles.subtitle}>{this.state.deck.cards} {this.state.deck.cards === 1 ? "card" : "cards"}</Text>
+              : <Text style={styles.subtitle}>{this.props.deck.cards} {this.props.deck.cards === 1 ? "card" : "cards"}</Text>
             }
           </Text>
         </View>
         <View style={styles.buttons}>
-          {this.state.deck.cards > 0
+          {this.props.deck.cards > 0
           ? <TouchableOpacity style={styles.button} onPress={this.startQuiz}>
               <Text style={styles.buttonText}>
                 Start Quiz
@@ -117,5 +108,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 
-
 });
+
+function mapStateToProps(state, ownProps) {
+  const id = ownProps.navigation.state.params.deckId
+  let deck = state.decks.filter(ele => ele.key === id)
+  return {
+    deck: deck[0]
+  }
+}
+
+export default connect(mapStateToProps)(DeckDetail)

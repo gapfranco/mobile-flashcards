@@ -2,7 +2,8 @@ import React from 'react';
 import { View, Text, StyleSheet, Dimensions, Platform, Button, TextInput, KeyboardAvoidingView, TouchableOpacity } from 'react-native'
 import colors from '../utils/colors'
 import { connect } from 'react-redux'
-import { fetchDeck } from '../utils/deckApi'
+import { addCardToDeck } from '../utils/deckApi'
+import { NavigationActions } from 'react-navigation'
 
 const window = Dimensions.get('window');
 
@@ -21,7 +22,8 @@ class QuizAddCard extends React.Component {
 
   addQuestion = () => {
    const {deck, question, answer} = this.state
-
+   addCardToDeck(deck.key, {question, answer})
+   this.props.navigation.dispatch(NavigationActions.back({deckId: deck.key, deckTitle: deck.title}))
   }
 
   render() {
