@@ -30,9 +30,7 @@ class Settings extends React.Component {
           Alert.alert(
             'Duplicate title',
             'Deck alredy exists with this title',
-            [
-              {text: 'OK', onPress: () => {}},
-            ],
+            [{text: 'OK', onPress: () => {}}],
             { cancelable: false }
           )              
         }
@@ -41,10 +39,8 @@ class Settings extends React.Component {
       Alert.alert(
         'Empty',
         'You must inform a deck title',
-        [
-          {text: 'OK', onPress: () => {}},
-        ],
-    { cancelable: true }
+        [{text: 'OK', onPress: () => {}}],
+        { cancelable: false }
       )
     }
   }
