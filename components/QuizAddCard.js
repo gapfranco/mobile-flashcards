@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Dimensions, Platform, Button, TextInput, KeyboardAvoidingView, TouchableOpacity } from 'react-native'
 import colors from '../utils/colors'
 import { connect } from 'react-redux'
-import { addCardToDeck } from '../utils/deckApi'
+import { addCard } from '../actions/deckActions'
 import { NavigationActions } from 'react-navigation'
 
 const window = Dimensions.get('window');
@@ -22,8 +22,7 @@ class QuizAddCard extends React.Component {
 
   addQuestion = () => {
    const {deck, question, answer} = this.state
-   // this.props.dispatch(addDate(deck,key, question, answer))
-   addCardToDeck(deck.key, {question, answer})
+   this.props.dispatch(addCard(deck.key, question, answer))
    this.props.navigation.dispatch(NavigationActions.back({deckId: deck.key, deckTitle: deck.title}))
   }
 

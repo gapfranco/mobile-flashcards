@@ -71,21 +71,20 @@ export function fetchDeck(id) {
   )
 }
 
-export function saveDeckTitle(title) {
-  const newObj = {
-    [title]: {
-      title: title,
-      questions: []
-    }
-  }
-  return AsyncStorage.setItem(DECK_STORAGE_KEY, newObj, () => {} )
+export function saveDeckTitle(title) {  
+  return AsyncStorage.getItem(DECK_STORAGE_KEY)
+    .then(result => {
+      let data = JSON.parse(result)
+      data.decks[title] = {title: title, questions: []}
+      return AsyncStorage.setItem(DECK_STORAGE_KEY, JSON.stringify(data))
+    })
 }
 
-export function addCardToDeck(title, card) {
+export function addCardToDeck(title, question, answer) {
   return AsyncStorage.getItem(DECK_STORAGE_KEY)
   .then(result => {
     let data = JSON.parse(result)
-    data.decks[title].questions.push(card)
+    data.decks[title].questions.push({question, answer})
     return AsyncStorage.setItem(DECK_STORAGE_KEY, JSON.stringify(data))
   })
 }

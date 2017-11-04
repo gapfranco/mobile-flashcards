@@ -8,13 +8,13 @@ import mainReducer from './reducers/mainReducer'
 import { loadDecks, loadDates } from './actions/deckActions'
 
 import DeckList from './components/DeckList'
-import Config from './components/Config'
+import Settings from './components/Settings'
 import Calendar from './components/Calendar'
 import DeckDetail from './components/DeckDetail'
 import QuizQuestion from './components/QuizQuestion'
 import QuizAddCard from './components/QuizAddCard'
 
-import { TabNavigator, StackNavigator } from 'react-navigation'
+import { TabNavigator, StackNavigator, NavigationActions } from 'react-navigation'
 import colors from './utils/colors'
 import { FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { Constants } from 'expo'
@@ -39,10 +39,8 @@ const Tabs = TabNavigator({
   DeckList: {
     screen: DeckList,
     navigationOptions: {
-      title: 'Decks',
       headerStyle: styles.header,
       headerTintColor: colors.white,
-      headerRight: <Button title="Add" onPress={() => {}}/>,
       tabBarLabel: 'Decks',
       tabBarIcon: ({ tintColor }) => <MaterialCommunityIcons name='cards-outline' size={30} color={tintColor} />
     },
@@ -57,8 +55,8 @@ const Tabs = TabNavigator({
       tabBarIcon: ({ tintColor }) => <MaterialCommunityIcons name='calendar-check' size={30} color={tintColor} />
     },
   },
-  Config: {
-    screen: Config,
+  Settings: {
+    screen: Settings,
     navigationOptions: {
       title: 'Settings',
       headerStyle: styles.header,
@@ -139,7 +137,7 @@ export default class App extends React.Component {
       <Provider store={store}>
         <View style={{flex: 1}}>
           {<FlashStatusBar backgroundColor={colors.purple} barStyle="light-content" />}
-          <MainNavigator />
+          <MainNavigator ref={nav => this.navigator = nav}/>
         </View>
       </Provider>
     )

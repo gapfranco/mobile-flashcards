@@ -1,5 +1,5 @@
 import actionTypes from './actionTypes'
-import { fetchDecks, fetchCalendar, addQuizToCalendar } from '../utils/deckApi'
+import { fetchDecks, fetchCalendar, addQuizToCalendar, saveDeckTitle, addCardToDeck} from '../utils/deckApi'
 
 /**
  * Load decks async action. Calls API and dispatches loadDecksSuccess
@@ -16,6 +16,23 @@ export const loadDecks = () => {
 
 export const loadDecksSuccess = (decks) => {
   return {type: actionTypes.LOAD_DECKS, decks};
+}
+
+/**
+ * Add new deck. Calls API and dispatches addDeckSuccess
+ */
+export const addDeck = (title) => {
+  return function(dispatch) {
+    return saveDeckTitle(title)
+      .then(() => dispatch(addDeckSuccess(title)))
+      .catch(error => {
+        throw(error);
+      })
+  }
+}
+
+export const addDeckSuccess = (deck) => {
+  return {type: actionTypes.ADD_DECK, deck};
 }
 
 /**
@@ -51,4 +68,21 @@ export const addDate = (date, quiz, perc) => {
 
 export const addDateSuccess = (date, quiz, perc) => {
   return {type: actionTypes.ADD_DATE, date, quiz, perc};
+}
+
+/**
+ * Add card to deck. Calls API and dispatches addCardSuccess
+ */
+export const addCard = (id, question, answer) => {
+  return function(dispatch) {
+    return addCardToDeck(id, question, answer)
+      .then(() => dispatch(addCardSuccess(id, question, answer)))
+      .catch(error => {
+        throw(error);
+      })
+  }
+}
+
+export const addCardSuccess = (id, question, answer) => {
+  return {type: actionTypes.ADD_CARD, id, question, answer};
 }

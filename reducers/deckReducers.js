@@ -9,10 +9,24 @@ export const decks = (state = [], action) => {
       return [
         ...state,
         {
-          title: deck.title,
+          key: deck.deck,
+          title: deck.deck,
           questions: [],
+          cards: 0
         }
       ]
+    case actionsTypes.ADD_CARD:
+      const {id, question, answer} = deck
+      return state.map(item => {
+        if (item.key === id) {
+          let newItem = item
+          newItem.questions.push({question, answer})
+          newItem.cards += 1
+          return {...item, newItem}
+        } else {
+          return item
+        }
+      })
     default:
       return state
   }

@@ -1,14 +1,19 @@
 import React from 'react';
-import { View, Text, StyleSheet, Platform, FlatList, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Platform, FlatList, Button, TouchableOpacity } from 'react-native'
 import colors from '../utils/colors'
 import { fetchDecks } from '../utils/deckApi'
 import { connect } from 'react-redux'
 
+
 class Deck extends React.Component {
+  
+  static navigationOptions = {
+    title: 'Decks',
+  }
 
   render() {
     return (
-      <View>
+      <View style={styles.container}>
         <FlatList
           data={this.props.decks}
           renderItem={({item}) => (
@@ -32,6 +37,11 @@ class Deck extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'transparent',
+    justifyContent: 'center',
+  },
   item: {
     backgroundColor: colors.white,
     padding: 20,

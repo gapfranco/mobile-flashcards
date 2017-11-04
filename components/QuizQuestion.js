@@ -40,15 +40,21 @@ class QuizQuestion extends React.Component {
     }
   }
 
+  /**
+   * End quiz and push to state
+   * Parameter p: if the last one was correct, add 1 to total correct
+   */
   endQuiz = (p) => {
     const perc = ((this.state.correct + p) * 100 / this.state.deck.cards).toFixed(1)
     this.setState(() => ({perc: perc}))
     // (new Date()).toLocaleDateString() crashes on Android. Workaround:
     // const today = new Date()
     // const date = `${today.getDate()}/${today.getMonth()}/${today.getYear()}`
+    // or using 3d.party library, like moment
     const date = moment().format('DD/MM/YYYY')
     this.props.dispatch(addDate(date, this.state.deck.title, perc))
   }
+  
   render() {
     if (this.state.deck === null) {
       return <View><Text>Aguarde</Text></View>
