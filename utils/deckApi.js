@@ -109,9 +109,9 @@ export function fetchCalendar() {
 export function addQuizToCalendar(date, quiz, perc) {
   const newQuiz = {date, quiz, perc}
   return AsyncStorage.getItem(CALENDAR_STORAGE_KEY)
-  .then(result => JSON.parse(result))
-  .then(result => {
-    result.push(newQuiz)
-    return AsyncStorage.setItem(CALENDAR_STORAGE_KEY, JSON.stringify(result))
-  })
+    .then(result => JSON.parse(result))
+    .then(result => {
+      result.push(newQuiz)
+      return AsyncStorage.setItem(CALENDAR_STORAGE_KEY, JSON.stringify(result))
+    })
 }

@@ -22,6 +22,7 @@ class QuizAddCard extends React.Component {
 
   addQuestion = () => {
    const {deck, question, answer} = this.state
+   // this.props.dispatch(addDate(deck,key, question, answer))
    addCardToDeck(deck.key, {question, answer})
    this.props.navigation.dispatch(NavigationActions.back({deckId: deck.key, deckTitle: deck.title}))
   }

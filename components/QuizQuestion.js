@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Platform, FlatList, Button, TouchableOpacity } 
 import colors from '../utils/colors'
 import { connect } from 'react-redux'
 import { addDate } from '../actions/deckActions'
+import moment from 'moment';
 
 class QuizQuestion extends React.Component {
 
@@ -42,10 +43,12 @@ class QuizQuestion extends React.Component {
   endQuiz = (p) => {
     const perc = ((this.state.correct + p) * 100 / this.state.deck.cards).toFixed(1)
     this.setState(() => ({perc: perc}))
-    this.props.dispatch(addDate((new Date()).toLocaleDateString(), this.state.deck.title, perc))
+    // (new Date()).toLocaleDateString() crashes on Android. Workaround:
+    // const today = new Date()
+    // const date = `${today.getDate()}/${today.getMonth()}/${today.getYear()}`
+    const date = moment().format('DD/MM/YYYY')
+    this.props.dispatch(addDate(date, this.state.deck.title, perc))
   }
-
-
   render() {
     if (this.state.deck === null) {
       return <View><Text>Aguarde</Text></View>
