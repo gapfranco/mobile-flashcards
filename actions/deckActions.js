@@ -1,5 +1,6 @@
 import actionTypes from './actionTypes'
 import { fetchDecks, fetchCalendar, addQuizToCalendar, saveDeckTitle, addCardToDeck} from '../utils/deckApi'
+import { setLocalNotification, scheduleNotification, getNotification } from '../utils/notification'
 
 /**
  * Load decks async action. Calls API and dispatches loadDecksSuccess
@@ -85,4 +86,34 @@ export const addCard = (id, question, answer) => {
 
 export const addCardSuccess = (id, question, answer) => {
   return {type: actionTypes.ADD_CARD, id, question, answer};
+}
+
+/**
+ * Set notification. Calls API and dispatches setNotificationSuccess
+ */
+export const setNotification = (notify, time) => {
+  return function(dispatch) {
+    return setLocalNotification(notify, time)
+      .then(() => dispatch(setNotificationSuccess(notify, time)))
+      .catch(error => {
+        throw(error);
+      })
+  }
+}
+
+/**
+ * Load notification. Calls API and dispatches setNotificationSuccess
+ */
+export const loadNotification = () => {
+  return function(dispatch) {
+    return getNotification()
+      .then((data) => dispatch(setNotificationSuccess(data.notify, data.time)))
+      .catch(error => {
+        throw(error);
+      })
+  }
+}
+
+export const setNotificationSuccess = (notify, time) => {
+  return {type: actionTypes.SET_NOTIFICATION, notify, time}
 }

@@ -1,9 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions, Platform, Button, Alert, ScrollView, Slider, Switch,
          TextInput, Keyboard, KeyboardAvoidingView, TouchableOpacity } from 'react-native'
+import DatePicker from 'react-native-datepicker'
 import colors from '../utils/colors'
 import { connect } from 'react-redux'
-import { addDeck } from '../actions/deckActions'
+import { addDeck, setNotification } from '../actions/deckActions'
 import { NavigationActions } from 'react-navigation'
 import { fetchDeck } from '../utils/deckApi'
 
@@ -13,9 +14,8 @@ class Settings extends React.Component {
 
   state = {
     title: '',
-    hour: 0,
-    minutes: 0,
-    notif: false
+    time: '',
+    notify: false
   }
 
   saveDeck = () => {
@@ -45,16 +45,25 @@ class Settings extends React.Component {
     }
   }
   
-  slideHour = (value) => {
-    this.setState(() => ({hour: value}))
-  }
-
-  slideMinute = (value) => {
-    this.setState(() => ({minutes: value}))
-  }
-
   switchNotification = (value) => {
-    this.setState(() => ({notif: value}))
+    this.setState(() => ({notify: value}))
+  }
+
+  changeTime = (time) => {
+    this.setState(() => ({time: time}))
+  }
+
+  setNotification = () => {
+    if (this.state.time === '') {
+      this.setState(() => ({time: '00:00'}))
+    }
+    this.props.dispatch(setNotification(this.state.notify, this.state.time))
+    this.props.navigation.goBack()      
+  }
+
+  componentDidMount () {
+    const {notify, date, time} = this.props.notification
+    this.setState(() => ({notify, date, time}))
   }
 
   render() {
@@ -66,7 +75,7 @@ class Settings extends React.Component {
             <Text style={styles.label}>Deck Title</Text>
               <TextInput
                 style={styles.input}
-                placeholder='Entrer deck title'
+                placeholder='Enter title'
                 onChangeText={(text) => this.setState({title: text})}
                 value={this.state.title}
               />
@@ -81,41 +90,38 @@ class Settings extends React.Component {
         <View style={styles.panel}>
           <Text style={styles.title}>Notification</Text>
           <View style={styles.slider}>
-            <Text style={styles.label}>Hour</Text>
-            <Slider
-              style={{flex: 1}}
-              step={1}
-              value={this.state.hour}
-              maximumValue={23}
-              minimumValue={0}
-              onValueChange={(value) => {this.slideHour(value)}}
+            <Text style={styles.label}>Time</Text>
+            <DatePicker
+              style={{width: 200}}
+              date={this.state.time}
+              mode="time"
+              format="HH:mm"
+              confirmBtnText="Confirm"
+              cancelBtnText="Cancel"
+              showIcon={false}
+              customStyles={{
+                dateInput: {
+                  marginLeft: 0,
+                }
+              }}
+              minuteInterval={5}
+              onDateChange={this.changeTime}
             />
-            <View style={styles.metricCounter}>
-              <Text style={{fontSize: 18, textAlign: 'center', marginRight: 8, marginRight: 8}}>{this.state.hour}</Text>
-            </View>
-            </View>
-            <View style={styles.slider}>
-            <Text style={styles.label}>Minutes</Text>
-            <Slider
-              style={{flex: 1}}
-              step={1}
-              value={this.state.minute}
-              maximumValue={59}
-              minimumValue={0}
-              onValueChange={(value) => {this.slideMinute(value)}}
-            />
-            <View style={styles.metricCounter}>
-              <Text style={{fontSize: 18, textAlign: 'center', marginRight: 8, marginLeft: 8}}>{this.state.minutes}</Text>
-            </View>
           </View>
           <View style={styles.slider}>
-            <Switch value={this.state.notif} onValueChange={this.switchNotification} />
+            <Switch value={this.state.notify} onValueChange={this.switchNotification} />
             <Text style={styles.notifSwitch}>
-              {this.state.notif ? 'On' : 'Off'}
+              {this.state.notify ? 'On' : 'Off'}
             </Text>
           </View>
+          <View style={styles.notify}>
+            <TouchableOpacity style={styles.button} onPress={this.setNotification}>
+            <Text style={styles.buttonText}>
+              Set Notification
+            </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-
       </ScrollView>
     );
   }
@@ -135,18 +141,20 @@ const styles = StyleSheet.create({
   slider: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'center'    
+    alignItems: 'center',
+    marginVertical: 8,    
+  },
+  notify: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 4,    
   },
   notifSwitch: {
     fontSize: 20, 
     fontWeight: 'bold',
     color: colors.blue,
     marginLeft: 12, 
-  },
-  metricCounter: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 12
   },
   label: {
     fontSize: 20,

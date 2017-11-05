@@ -50,3 +50,16 @@ export const dates = (state = [], action) => {
       return state
   }
 }
+
+export const notification = (state = {}, action) => {
+  const {type, ...notif} = action
+  switch (type) {
+    case actionsTypes.SET_NOTIFICATION:
+      return {
+          notify: notif.notify,
+          time: notif.time
+      }
+    default:
+      return state
+  }
+}

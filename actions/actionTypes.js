@@ -4,6 +4,7 @@ const actionsTypes = {
   LOAD_DATES: 'LOAD_DATES',
   ADD_DATE: 'ADD_DATE',
   ADD_CARD: 'ADD_CARD',
+  SET_NOTIFICATION: 'SET_NOTIFICATION'
 }
 
 export default actionsTypes

@@ -23,6 +23,7 @@
     "moment": "^2.19.1",
     "react": "16.0.0-beta.5",
     "react-native": "^0.49.5",
+    "react-native-datepicker": "^1.6.0",
     "react-navigation": "^1.0.0-beta.15",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",

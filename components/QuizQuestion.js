@@ -2,7 +2,8 @@ import React from 'react';
 import { View, Text, StyleSheet, Platform, FlatList, Button, TouchableOpacity } from 'react-native'
 import colors from '../utils/colors'
 import { connect } from 'react-redux'
-import { addDate } from '../actions/deckActions'
+import { addDate, loadNotification } from '../actions/deckActions'
+import { scheduleNotification } from '../utils/notification'
 import moment from 'moment';
 
 class QuizQuestion extends React.Component {
@@ -23,6 +24,21 @@ class QuizQuestion extends React.Component {
   turnCard = () => {
     this.setState(() => ({front: !this.state.front}))
   }
+
+  restartQuiz = () => {
+    this.setState(() => ({index: 0, correct: 0, front: true, perc: null}))
+  }
+  
+  finishQuiz = () => {
+    // (new Date()).toLocaleDateString() crashes on Android. Workaround:
+    // const today = new Date()
+    // const date = `${today.getDate()}/${today.getMonth()}/${today.getYear()}`
+    // or using 3d.party library, like moment
+    const date = moment().format('DD/MM/YYYY')
+    this.props.dispatch(addDate(date, this.state.deck.title, this.state.perc))
+    scheduleNotification()
+    this.props.navigation.goBack() 
+  } 
 
   nextCorrect = () => {
     if (this.state.index < this.state.deck.cards - 1) {
@@ -47,14 +63,8 @@ class QuizQuestion extends React.Component {
   endQuiz = (p) => {
     const perc = ((this.state.correct + p) * 100 / this.state.deck.cards).toFixed(1)
     this.setState(() => ({perc: perc}))
-    // (new Date()).toLocaleDateString() crashes on Android. Workaround:
-    // const today = new Date()
-    // const date = `${today.getDate()}/${today.getMonth()}/${today.getYear()}`
-    // or using 3d.party library, like moment
-    const date = moment().format('DD/MM/YYYY')
-    this.props.dispatch(addDate(date, this.state.deck.title, perc))
   }
-  
+
   render() {
     if (this.state.deck === null) {
       return <View><Text>Aguarde</Text></View>
@@ -62,8 +72,20 @@ class QuizQuestion extends React.Component {
     if (this.state.perc !== null) {
       return (
         <View style={styles.results}>
-          <Text style={styles.question}>Your Result</Text>
+          <Text style={styles.question}>Final Result</Text>
           <Text style={styles.answer}>{this.state.perc}%</Text>
+          <View style={styles.buttons}>
+            <TouchableOpacity style={styles.button} onPress={this.restartQuiz}>
+              <Text style={styles.buttonText}>
+                Restart Quiz
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.button2,{backgroundColor: colors.blue}]} onPress={this.finishQuiz}>
+              <Text style={styles.buttonText}>
+                Back to Deck
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       )
     }
@@ -77,7 +99,7 @@ class QuizQuestion extends React.Component {
           <Text style={styles.question}>{this.state.deck.questions[this.state.index].question}</Text>
           <TouchableOpacity onPress={this.turnCard}>
             <Text style={styles.revert}>
-              Answer {this.state.front}
+              Show Answer {this.state.front}
             </Text>
           </TouchableOpacity>
           </View>
@@ -85,7 +107,7 @@ class QuizQuestion extends React.Component {
           <Text style={styles.answer}>{this.state.deck.questions[this.state.index].answer}</Text>
           <TouchableOpacity onPress={this.turnCard}>
             <Text style={styles.revert}>
-              Question
+              Back to question
             </Text>
           </TouchableOpacity>
           </View>
@@ -117,6 +139,7 @@ const styles = StyleSheet.create({
   },
   results: {
     flex: 1,
+    padding: 32,
     backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',

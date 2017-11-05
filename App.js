@@ -5,7 +5,7 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
 import mainReducer from './reducers/mainReducer'
-import { loadDecks, loadDates } from './actions/deckActions'
+import { loadDecks, loadDates, loadNotification } from './actions/deckActions'
 
 import DeckList from './components/DeckList'
 import Settings from './components/Settings'
@@ -18,8 +18,6 @@ import { TabNavigator, StackNavigator, NavigationActions } from 'react-navigatio
 import colors from './utils/colors'
 import { FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { Constants } from 'expo'
-
-// import { setLocalNotification } from './utils/helpers'
 
 const styles = StyleSheet.create({
   header: {
@@ -126,11 +124,9 @@ const MainNavigator = StackNavigator({
 let store = createStore(mainReducer, applyMiddleware(thunk))
 store.dispatch(loadDecks())
 store.dispatch(loadDates())
+store.dispatch(loadNotification())
 
 export default class App extends React.Component {
-  // componentDidMount() {
-  //   setLocalNotification()
-  // }
 
   render() {
     return (
