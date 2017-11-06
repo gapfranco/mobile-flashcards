@@ -95,11 +95,13 @@ a quiz it will cancel the notification and reschedule to the same time next day.
 
 The user can cancel notificatin anytime by toggling notification off.
 
+### Compatibility
 
-## Tests
+The app was tested in iphone and android devices. Exemples in Android:
 
-There are a couple of *Jest* tests on action creators in the *\_\_tests\_\_* folder. It still lacks
-asynchronous actions creators tests and reducers tests.
+![screen10](/images/screen10.png)
+
+![screen11](/images/screen11.png)
 
 ## Set Up
 
