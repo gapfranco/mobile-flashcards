@@ -1,52 +1,33 @@
 import { AsyncStorage } from 'react-native'
+import dummyData from './dummyData'
 
 export const DECK_STORAGE_KEY = 'Flashcards:decks'
 export const CALENDAR_STORAGE_KEY = 'Flashcards:calendar'
+export const NOTIFICATION_KEY = 'Flashcards:notification'
 
 function setInitialData() {
-
-  const data = {
-    React: {
-      title: 'React',
-      questions: [
-        {
-          question: 'What is React?',
-          answer: 'A library for managing user interfaces'
-        },
-        {
-          question: 'Where do you make Ajax requests in React?',
-          answer: 'The componentDidMount lifecycle event'
-        }
-      ]
-    },
-    JavaScript: {
-      title: 'JavaScript',
-      questions: [
-        {
-          question: 'What is a closure?',
-          answer: 'The combination of a function and the lexical environment within which that function was declared.'
-        }
-      ]
-    },
-    'React Native': {
-      title: 'React Native',
-      questions: [
-        {
-          question: 'What is a Reactive Native?',
-          answer: 'The combination of a function and the lexical environment within which that function was declared.'
-        }
-      ]
-    },
-  }
-
+  const data = dummyData
   let initialData = {decks: data}
   AsyncStorage.setItem(DECK_STORAGE_KEY, JSON.stringify(initialData))
-
   return initialData
 }
 
+function setInitialCalendar() {
+  const dates = []
+  AsyncStorage.setItem(CALENDAR_STORAGE_KEY, JSON.stringify(dates))
+  return {dates: dates}
+}
+
+function setInitialNotifications() {
+  data = {
+    notify: false,
+    time: '00:00'
+  }
+  AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(data))
+  return data
+}
+
 function formatDataResults(results) {
-  // return setInitialData()
   return results === null
     ? setInitialData()
     : JSON.parse(results)
@@ -71,7 +52,7 @@ export function fetchDeck(id) {
   )
 }
 
-export function saveDeckTitle(title) {  
+export function saveDeckTitle(title) {
   return AsyncStorage.getItem(DECK_STORAGE_KEY)
     .then(result => {
       let data = JSON.parse(result)
@@ -87,11 +68,6 @@ export function addCardToDeck(title, question, answer) {
     data.decks[title].questions.push({question, answer})
     return AsyncStorage.setItem(DECK_STORAGE_KEY, JSON.stringify(data))
   })
-}
-
-function setInitialCalendar() {
-  const dates = []
-  AsyncStorage.setItem(CALENDAR_STORAGE_KEY, JSON.stringify(dates))
 }
 
 function formatCalendarResults(results) {
@@ -113,4 +89,10 @@ export function addQuizToCalendar(date, quiz, perc) {
       result.push(newQuiz)
       return AsyncStorage.setItem(CALENDAR_STORAGE_KEY, JSON.stringify(result))
     })
+}
+
+export function resetStorage() {
+  setInitialData()
+  setInitialCalendar()
+  setInitialNotifications()
 }

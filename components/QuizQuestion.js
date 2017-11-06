@@ -28,7 +28,7 @@ class QuizQuestion extends React.Component {
   restartQuiz = () => {
     this.setState(() => ({index: 0, correct: 0, front: true, perc: null}))
   }
-  
+
   finishQuiz = () => {
     // (new Date()).toLocaleDateString() crashes on Android. Workaround:
     // const today = new Date()
@@ -37,8 +37,8 @@ class QuizQuestion extends React.Component {
     const date = moment().format('DD/MM/YYYY')
     this.props.dispatch(addDate(date, this.state.deck.title, this.state.perc))
     scheduleNotification()
-    this.props.navigation.goBack() 
-  } 
+    this.props.navigation.goBack()
+  }
 
   nextCorrect = () => {
     if (this.state.index < this.state.deck.cards - 1) {
@@ -113,7 +113,7 @@ class QuizQuestion extends React.Component {
           </View>
         }
         <View style={styles.buttons}>
-        
+
           <TouchableOpacity style={styles.button} onPress={this.nextCorrect}>
             <Text style={styles.buttonText}>
               Correct
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   question: {
-    fontSize: 32,
+    fontSize: 24,
     margin: 20,
     fontWeight: 'bold'
   },
@@ -187,6 +187,7 @@ const styles = StyleSheet.create({
   },
   revert: {
     fontSize: 24,
+    marginTop: 20,
     color: colors.red,
   },
   button: {

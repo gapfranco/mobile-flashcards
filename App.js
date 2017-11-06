@@ -18,6 +18,7 @@ import { TabNavigator, StackNavigator, NavigationActions } from 'react-navigatio
 import colors from './utils/colors'
 import { FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { Constants } from 'expo'
+import { resetStorage } from './utils/deckApi'
 
 const styles = StyleSheet.create({
   header: {
@@ -119,6 +120,10 @@ const MainNavigator = StackNavigator({
   },
 
 })
+
+// Reset contents:
+// Uncomment and restart to reset to initial content. Then comment and restart again
+//resetStorage()
 
 // Create store and load initial data
 let store = createStore(mainReducer, applyMiddleware(thunk))

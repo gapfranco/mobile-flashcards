@@ -4,8 +4,7 @@ import { FontAwesome, MaterialIcons, MaterialCommunityIcons } from '@expo/vector
 import colors from './colors'
 import { Notifications, Permissions } from 'expo'
 import moment from 'moment';
-
-const NOTIFICATION_KEY = 'Flashcards:notification'
+import { NOTIFICATION_KEY } from '../utils/deckApi'
 
 function createNotification () {
   return {
@@ -37,7 +36,7 @@ function setNotification(day) {
         )
       }
     })
-}  
+}
 
 export function setLocalNotification(notify, time) {
   return AsyncStorage.getItem(NOTIFICATION_KEY)
